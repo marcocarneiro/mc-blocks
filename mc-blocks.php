@@ -15,6 +15,7 @@ function mc_blocks_load() {
 	\Carbon_Fields\Carbon_Fields::boot();
 }
 add_action( 'after_setup_theme', 'mc_blocks_load' );
+
  
 
 /**
@@ -31,12 +32,12 @@ function simulacao_financiamento()
 		->set_description( __( 'Bloco para permitir que os usuários façam uma simulação de financiamento.' ) )
 		->set_category( 'common' )
 		->set_icon( 'calculator' )
-		->set_style( 'mc-block-stylesheet' )
 		->set_render_callback( function ( $block ) {
  
 			ob_start();
 			?>
-
+		<style>
+		</style>
 		<div class="simulacao mb-5">
 			<div class="pb-5 pt-5 txt-leitura bg-claro">
 				<div class="container-fluid">
