@@ -16,7 +16,76 @@ function mc_blocks_load() {
 }
 add_action( 'after_setup_theme', 'mc_blocks_load' );
 
+
+/**
+ * Bloco imagem abre vídeo em janela modal
+ */
+function imagem_videomodal()
+{
+	Block::make( 'Imagem abre vídeo em janela modal' )
+		->add_fields( array(
+			Field::make( 'text', 'incorporacao', __( 'Código de incorporação (Youtube ou Vimeo)' ) ),
+			Field::make( 'image', 'image', __( 'Imagem primeiro frame' ) ),
+		) )
+		->set_description( __( 'Bloco com imagem que abre um vídeo num modal.' ) )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_icon( 'dashicons-admin-page' )
+		->set_render_callback( function ( $block ) {
  
+			ob_start();
+			?>
+			
+			<figure class="mcblocks-videomodal wp-block-image size-full clickable" 
+			onclick="abreModal('<?php echo esc_html( $block['incorporacao'] ); ?>')">
+				<?php echo wp_get_attachment_image( $block['image'], 'full' ); ?>
+			</figure>					
+ 
+			<?php
+ 
+			return ob_get_flush();
+		} );
+}
+add_action( 'carbon_fields_register_fields', 'imagem_videomodal' );
+
+
+
+/**
+ * Bloco para vídeo em fullscreen
+ */
+function video_background()
+{
+	Block::make( 'Vídeo Background' )
+		->add_fields( array(
+			Field::make( 'image', 'url_video', __( 'Vídeo' ) )->set_type( array( 'image', 'video' ) ),
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
+		) )
+		->set_description( __( 'Bloco para vídeo fullscreen formato mp4 da biblioteca.' ) )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_icon( 'format-video' )
+		->set_render_callback( function ( $block ) {
+ 
+			ob_start();
+				?>
+
+				<?php 
+					$url = wp_get_attachment_url( $block['url_video'] );
+					$imgsrc = esc_html( $url );
+				?>
+
+				<div class="mcblocks-videofullscreen">
+					<video src="<?php echo $imgsrc ?>" muted="" loop="" autoplay=""></video>
+					<div class="content" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="1000">
+						<?php echo apply_filters( 'the_content', $block['content'] ); ?>
+					</div>
+				</div>
+
+				<?php 
+			return ob_get_flush();
+	} );
+}
+add_action( 'carbon_fields_register_fields', 'video_background' );
+
+
 
 /**
  * Bloco para simulação de financiamento
@@ -27,98 +96,47 @@ function simulacao_financiamento()
 	Block::make( 'Simulação Financiamento' )
 		->add_fields( array(
 			Field::make( 'text', 'titulo', 'Nome da linha de financiamento' ),
-			Field::make( 'number', 'taxa', 'Taxa' )
+			Field::make( 'number', 'taxa', 'Taxa' ),
+			Field::make( 'number', 'limite', 'Limite de parcelas (-1 para sem limites)' )
 		) )
 		->set_description( __( 'Bloco para permitir que os usuários façam uma simulação de financiamento.' ) )
-		->set_category( 'common' )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
 		->set_icon( 'calculator' )
 		->set_render_callback( function ( $block ) {
  
 			ob_start();
 			?>
-		<style>
-		</style>
-		<div class="simulacao mb-5">
-			<div class="pb-5 pt-5 txt-leitura bg-claro">
-				<div class="container-fluid">
-					<div class="row mt-5 mb-5">
-						<div class="col-md-4 offset-md-2">
-							<h2>Faça agora a<br>sua simulação</h2>
-							<p id="txt-linha-selecionada" style="width: 250px; padding-top: 20px;">
-								Com a <?php echo esc_html( $block['titulo'] ); ?> a taxa de juros é de
-							</p>
-							<h1 id="txt-taxa-juros" style=""><?php echo esc_html( $block['taxa'] ); ?>% a.m.</h1>
-						</div>					
-						<div class="col-md-4">
-							<form id="form-simulacao">
-								<input class="form-control inputVlr" type="text" placeholder="Valor do Empréstimo">
-								<input class="form-control parcelas" type="text" placeholder="Parcelas">
-							</form>
-							<p class="txt-auxiliar-resultado"></p>
-							<h1 id="txt-resultado"></h1>
-						</div>
-						<script>
-							
-						</script>
-					</div>
-				</div>
-			</div> 
-		</div>
+				<form id="mcblocks-form-simulacao">
+					<input class="form-control mb-5 inputVlr" id="mcblocks-valor" type="text" placeholder="Valor do Empréstimo">
+					<input class="form-control parcelas" id="mcblocks-parcelas" onkeyup="simulacao()" type="text" placeholder="Parcelas">
+				</form>
+				<p class="text-white" id="mcblocks-txt-auxiliar"></p>
+				<h1 id="mcblocks-txt-resultado"></h1>
+				<script>					
+					function calculaParcela(valor, parcelas, juros) 
+					{						
+						valor = (valor * 1.00033) * 1.0173;
+						resultado = valor * ((Math.pow(1 + juros, parcelas) * juros) / (Math.pow(1 + juros, parcelas) - 1));
+						return resultado;
+					}
+					function simulacao()
+					{
+						var vlr = Number(document.getElementById('mcblocks-valor').value);
+						var parcelas = Number(document.getElementById('mcblocks-parcelas').value);
+						if(parcelas > Number(<?php echo $block['limite'] ?>))
+						{
+							alert('O limite máximo de parcelas é ' + <?php echo $block['limite'] ?> );
+							document.getElementById('mcblocks-parcelas').value = '';
+						}
+						var juros = Number(<?php echo $block['taxa'] ?>)*0.01;
+						var result = calculaParcela(vlr, parcelas, juros);
+						result = String(result.toFixed(2).replace(".", ","));
+						document.getElementById('mcblocks-txt-resultado').innerText = result;
+					}
+				</script>
  
-			<?php
- 
+			<?php 
 			return ob_get_flush();
 		} );
 }
 add_action( 'carbon_fields_register_fields', 'simulacao_financiamento' );
-
-
-/**
- * Bloco para simulação de financiamento - fundo colorido
- */
-/* function bgcolor_simulacao_financiamento()
-{
-
-}
-add_action( 'carbon_fields_register_fields', 'bgcolor_simulacao_financiamento' ); */
-
-
-
-/* function simulacao_attach_theme_options() {
-	Block::make( 'Simulação' )
-		->add_fields( array(
-			Field::make( 'text', 'titulo', 'Nome da linha de financiamento' ),
-			Field::make( 'rich_text', 'descricao', 'Descrição' ),
-			Field::make( 'number', 'taxa', 'Taxa' )
-		) )
-		->set_render_callback( function ( $block ) {
- 
-			ob_start();
-			?>
-
-            <script>
-                alert('Aqui entra o código JS!!!!!');
-            </script>
- 
-			<div class="block">
-				<div class="block__heading">
-					<h2><?php echo esc_html( $block['titulo'] ); ?></h2>
-				</div><!-- /.block__heading -->
- 
-				<div class="block__descricao">
-                    <?php echo apply_filters( 'the_content', $block['descricao'] ); ?>
-				</div><!-- /.block__content -->
-
-                <div class="block__taxa">
-					<p><strong><?php echo esc_html( $block['taxa'] ); ?></strong></p>
-				</div><!-- /.block__heading -->
-			</div><!-- /.block -->
- 
-			<?php
- 
-			return ob_get_flush();
-		} );
-}
-add_action( 'carbon_fields_register_fields', 'simulacao_attach_theme_options' ); */
-
-
