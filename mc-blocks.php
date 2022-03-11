@@ -97,7 +97,7 @@ function simulacao_financiamento()
 		->add_fields( array(
 			Field::make( 'text', 'titulo', 'Nome da linha de financiamento' ),
 			Field::make( 'number', 'taxa', 'Taxa' ),
-			Field::make( 'number', 'limite', 'Limite de parcelas (-1 para sem limites)' )
+			Field::make( 'number', 'limite', 'Limite de parcelas' )
 		) )
 		->set_description( __( 'Bloco para permitir que os usuários façam uma simulação de financiamento.' ) )
 		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )

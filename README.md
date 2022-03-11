@@ -2,6 +2,7 @@
 Coleção de Blocos de Gutenberg - WordPress
 
 ## Blocos disponíveis
+
 ### Imagem videomodal
 Esse bloco abre um vídeo incorporado (vimeo ou youtube) dentro de um modal.
 Uma imagem servirá de link para a abertura do vídeo
