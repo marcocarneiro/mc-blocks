@@ -176,19 +176,19 @@ function blockCounter()
 			echo '<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">';
 			echo '<div class="carousel-inner">';
 
-            foreach ($counters as $counter):
+			foreach ($counters as $counter):
 
                 $image_black = $counter['counter_img'];
                 $list_counter_tb = $counter['legenda'];
-
-				echo '<div class="carousel-item active">';
+				
+				echo '<div class="carousel-item">';
 				echo '	<img src="'.$counter['counter_img'].'" class="d-block w-100" alt="' .$counter['legenda']. '">';
 				echo '	<div class="carousel-caption d-none d-md-block">';
 				echo '		<p>' .$counter['legenda']. '</p>';
 				echo '	</div>';
 				echo '</div>';
-
-            endforeach;
+				
+			endforeach;
 			echo '</div>';
 
 			echo '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
