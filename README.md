@@ -13,5 +13,8 @@ Uma imagem servirá de link para a abertura do vídeo
 Bloco que adiciona um vídeo com a largura total da página como de fundo na página.
 Pode-se incluir uma legenda sobre o vídeo. O arquivo deverá estar na biblioteca de mídias, o bloco não funciona para vídeos incorporados como Vimeo ou Youtube.
 
+### Slideshow
+Bloco baseado no componente Carousel do Bootstrap. Pode-se inserir várias imagens com ou sem legendas.
+
 ### Simulação Financiamento
 Esse bloco pode ser usado em sites de financeiras ou cooperativas de crédito, serve para o usuário fazer uma simulação de financiamento. Nas configurações do bloco pode-se definir uma taxa de juros e quantidade máximas de parcelas, o bloco calcula o valor da mensalidade após o usuário digitar um valor e parcelas desejadas.
