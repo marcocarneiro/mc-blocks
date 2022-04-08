@@ -1,22 +1,31 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'e34d5171c1bd42ea8b615215826ec9cd4d788ea9',
         'name' => '__root__',
         'dev' => true,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'e34d5171c1bd42ea8b615215826ec9cd4d788ea9',
+            'dev_requirement' => false,
+        ),
+        'htmlburger/carbon-field-number' => array(
+            'pretty_version' => 'v3.0.0',
+            'version' => '3.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../htmlburger/carbon-field-number',
+            'aliases' => array(),
+            'reference' => '3bddfaf256472d6071c62e566d011e1f2cdae0c6',
             'dev_requirement' => false,
         ),
         'htmlburger/carbon-fields' => array(

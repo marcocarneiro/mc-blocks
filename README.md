@@ -1,5 +1,7 @@
 # mc-blocks
-Coleção de Blocos de Gutenberg - WordPress
+Coleção de Blocos de Gutenberg - WordPress<br>
+Para temas qu utilizam o Bootstrap 5.<br>
+Essa coleção de blocos utiliza a biblioteca <a href="https://carbonfields.net/" target="_blank">Carbon Fields,</a> blocos totalmente feitos com código PHP.
 
 ## Blocos disponíveis
 
@@ -12,4 +14,4 @@ Bloco que adiciona um vídeo com a largura total da página como de fundo na pá
 Pode-se incluir uma legenda sobre o vídeo. O arquivo deverá estar na biblioteca de mídias, o bloco não funciona para vídeos incorporados como Vimeo ou Youtube.
 
 ### Simulação Financiamento
-Esse bloco pode ser usado em sites de financeiras ou cooperativas de crédito, serve para o usuário fazer uma simulação de financiamento. Pode-se digitar a taxa de juros e parcelas, o bloco calcula o valor da mensalidade.
+Esse bloco pode ser usado em sites de financeiras ou cooperativas de crédito, serve para o usuário fazer uma simulação de financiamento. Nas configurações do bloco pode-se definir uma taxa de juros e quantidade máximas de parcelas, o bloco calcula o valor da mensalidade após o usuário digitar um valor e parcelas desejadas.

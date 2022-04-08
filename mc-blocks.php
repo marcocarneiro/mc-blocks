@@ -6,6 +6,8 @@ Text Domain: mc-blocks
 
 use Carbon_Fields\Block;
 use Carbon_Fields\Field;
+use Carbon_Fields\Container;
+
  
 defined( 'ABSPATH' ) || exit;
 
@@ -85,58 +87,6 @@ function video_background()
 }
 add_action( 'carbon_fields_register_fields', 'video_background' );
 
-/**
- * Bloco para Sliders - carousel
- * Bootstrap 5
- */
-function sliders_container()
-{
-	Block::make( 'complex', 'slider_show', __( 'Slider Show' ) )
-	->set_inner_blocks( true )
-	->add_fields( array(
-		Field::make( 'text', 'title', __( 'Slide Title' ) ),
-	) )
-	->set_description( __( 'Container para slides. Adicione slides dentro desse bloco.' ) )
-	->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )		
-	->set_icon( 'interactive' )
-	->set_render_callback( function ( $block ) {
-
-		ob_start();
-		?>
-			<!-- tags -->
-			<?php var_dump($block['slider_show']); ?>
-
-		<?php 
-		return ob_get_flush();
-	} );
-}
-add_action( 'carbon_fields_register_fields', 'sliders_container' );
-
-
-function slide()
-{
-	Block::make( 'Slide de imagens' )
-		->add_fields( array(
-			Field::make( 'text', 'legenda', __( 'Legenda do Slide' ) ),
-			Field::make( 'text', 'url', __( 'Link do slide' ) ),
-			Field::make( 'image', 'imagem', __( 'Imagem do slide' ) ),
-		) )
-	->set_description( __( 'Slides em carousel. Inserir' ) )
-	->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )		
-	->set_icon( 'interactive' )
-	->set_render_callback( function ( $block ) {
-
-		ob_start();
-		?>
-			<!-- tags -->
-
-		<?php 
-		return ob_get_flush();
-	} );
-}
-add_action( 'carbon_fields_register_fields', 'slide' );
-
-
 
 /**
  * Bloco para simulação de financiamento
@@ -191,3 +141,68 @@ function simulacao_financiamento()
 		} );
 }
 add_action( 'carbon_fields_register_fields', 'simulacao_financiamento' );
+
+
+/**
+ * Bloco para Sliders - carousel
+ * Bootstrap 5
+ */
+function blockCounter()
+{
+    Block::make(__('Counter block'))->add_fields(array(
+        Field::make('text', 'all_counter_heading', __('Block Title')) ,
+        Field::make('complex', 'crb_list_counter', __('Counter'))
+            ->set_layout('tabbed-horizontal')
+            ->add_fields(array(
+            Field::make('image', 'counter_img', 'Image main')
+                ->set_required(true)
+                ->set_value_type('url')
+                ->set_width(50) ,
+            Field::make('text', 'legenda', 'Legenda')
+                ->set_width(30) ,
+
+        )) ,
+
+    ))
+        ->set_icon('heart')
+        ->set_keywords([__('Counter') ])
+        ->set_description(__('A simple Counter block.'))
+        ->set_category('layout')->set_render_callback(function ($fields, $attributes, $inner_blocks)
+    {
+
+        $counters = $fields['crb_list_counter'];
+        if ($counters):
+
+			echo '<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">';
+			echo '<div class="carousel-inner">';
+
+            foreach ($counters as $counter):
+
+                $image_black = $counter['counter_img'];
+                $list_counter_tb = $counter['legenda'];
+
+				echo '<div class="carousel-item active">';
+				echo '	<img src="'.$counter['counter_img'].'" class="d-block w-100" alt="' .$counter['legenda']. '">';
+				echo '	<div class="carousel-caption d-none d-md-block">';
+				echo '		<p>' .$counter['legenda']. '</p>';
+				echo '	</div>';
+				echo '</div>';
+
+            endforeach;
+			echo '</div>';
+
+			echo '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>';
+
+			echo '</div>';
+
+        endif;
+    });
+}
+add_action('carbon_fields_register_fields', 'blockCounter');
