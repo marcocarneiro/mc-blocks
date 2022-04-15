@@ -147,9 +147,9 @@ add_action( 'carbon_fields_register_fields', 'simulacao_financiamento' );
  * Bloco para Sliders - carousel
  * Bootstrap 5
  */
-function blockCounter()
+function sliders()
 {
-    Block::make(__('Counter block'))->add_fields(array(
+    Block::make(__('MC Slider Show'))->add_fields(array(
         Field::make('text', 'all_counter_heading', __('Block Title')) ,
         Field::make('complex', 'crb_list_counter', __('Counter'))
             ->set_layout('tabbed-horizontal')
@@ -164,9 +164,9 @@ function blockCounter()
         )) ,
 
     ))
-        ->set_icon('heart')
-        ->set_keywords([__('Counter') ])
-        ->set_description(__('A simple Counter block.'))
+        ->set_icon('media-interactive')
+        ->set_keywords([__('SliderShow') ])
+        ->set_description(__('SliderShow.'))
         ->set_category('layout')->set_render_callback(function ($fields, $attributes, $inner_blocks)
     {
 
@@ -176,17 +176,25 @@ function blockCounter()
 			echo '<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">';
 			echo '<div class="carousel-inner">';
 
-			foreach ($counters as $counter):
 
+			$i = 0;
+			foreach ($counters as $counter):
                 $image_black = $counter['counter_img'];
                 $list_counter_tb = $counter['legenda'];
 				
-				echo '<div class="carousel-item">';
+				if($i == 0)
+				{ 
+					echo '<div class="carousel-item active">';
+				}else{
+					echo '<div class="carousel-item ">';
+				}				
 				echo '	<img src="'.$counter['counter_img'].'" class="d-block w-100" alt="' .$counter['legenda']. '">';
 				echo '	<div class="carousel-caption d-none d-md-block">';
 				echo '		<p>' .$counter['legenda']. '</p>';
 				echo '	</div>';
 				echo '</div>';
+
+				$i ++;
 				
 			endforeach;
 			echo '</div>';
@@ -205,4 +213,4 @@ function blockCounter()
         endif;
     });
 }
-add_action('carbon_fields_register_fields', 'blockCounter');
+add_action('carbon_fields_register_fields', 'sliders');
