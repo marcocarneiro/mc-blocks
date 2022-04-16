@@ -18,20 +18,42 @@ function mc_blocks_load() {
 }
 add_action( 'after_setup_theme', 'mc_blocks_load' );
 
+//Função geradora de SLUGS para utilizar em atributos ID
+function slugify($text)
+{
+  // replace non letter or digits by -
+  $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+  // transliterate
+  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+  // remove unwanted characters
+  $text = preg_replace('~[^-\w]+~', '', $text);
+  // trim
+  $text = trim($text, '-');
+  // remove duplicate -
+  $text = preg_replace('~-+~', '-', $text);
+  // lowercase
+  $text = strtolower($text);
+  if (empty($text)) {
+    return 'n-a';
+  }
+
+  return $text;
+}
+
 
 /**
  * Bloco imagem abre vídeo em janela modal
  */
 function imagem_videomodal()
 {
-	Block::make( 'Imagem abre vídeo em janela modal' )
+	Block::make( 'MC vídeo modal' )
 		->add_fields( array(
 			Field::make( 'text', 'incorporacao', __( 'Código de incorporação (Youtube ou Vimeo)' ) ),
 			Field::make( 'image', 'image', __( 'Imagem primeiro frame' ) ),
 		) )
-		->set_description( __( 'Bloco com imagem que abre um vídeo num modal.' ) )
+		->set_description( __( 'Bloco de imagem que abre um vídeo num modal.' ) )
 		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
-		->set_icon( 'dashicons-admin-page' )
+		->set_icon( 'media-video' )
 		->set_render_callback( function ( $block ) {
  
 			ob_start();
@@ -56,12 +78,12 @@ add_action( 'carbon_fields_register_fields', 'imagem_videomodal' );
  */
 function video_background()
 {
-	Block::make( 'Vídeo Background' )
+	Block::make( 'MC Vídeo Background' )
 		->add_fields( array(
 			Field::make( 'image', 'url_video', __( 'Vídeo' ) )->set_type( array( 'image', 'video' ) ),
 			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
 		) )
-		->set_description( __( 'Bloco para vídeo fullscreen formato mp4 da biblioteca.' ) )
+		->set_description( __( 'Bloco para vídeo fullscreen formato mp4 - arquivo deverá estar na biblioteca.' ) )
 		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
 		->set_icon( 'format-video' )
 		->set_render_callback( function ( $block ) {
@@ -154,7 +176,7 @@ function sliders()
         Field::make('complex', 'crb_list_counter', __('Counter'))
             ->set_layout('tabbed-horizontal')
             ->add_fields(array(
-            Field::make('image', 'counter_img', 'Image main')
+            Field::make('image', 'counter_img', 'Imagem')
                 ->set_required(true)
                 ->set_value_type('url')
                 ->set_width(50) ,
@@ -166,16 +188,27 @@ function sliders()
     ))
         ->set_icon('media-interactive')
         ->set_keywords([__('SliderShow') ])
-        ->set_description(__('SliderShow.'))
-        ->set_category('layout')->set_render_callback(function ($fields, $attributes, $inner_blocks)
+        ->set_description(__('Bloco para criação de SlideShow baseado no componente carousel do Bootstrap.'))
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+        ->set_render_callback(function ($fields, $attributes, $inner_blocks)
     {
 
-        $counters = $fields['crb_list_counter'];
-        if ($counters):
+        //Cria um slug com o título do slideshow
+		$id = slugify($fields['all_counter_heading']);
 
-			echo '<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">';
+		$counters = $fields['crb_list_counter'];
+        if ($counters):			
+			echo '<div id="' .$id. '" class="carousel slide" data-bs-ride="carousel">';
+			echo '<div class="carousel-indicators">';
+				for ($c=0; $c < count($counters); $c++) {
+					if($c == 0){
+						echo '<button type="button" data-bs-target="#' .$id. '" data-bs-slide-to="' .$c. '" class="active" aria-current="true" aria-label="Slide ' .$c. '"></button>';
+					}else{
+						echo '<button type="button" data-bs-target="#' .$id. '" data-bs-slide-to="' .$c. '" aria-label="Slide ' .$c. '"></button>';
+					}					
+				}
+			echo '</div>';
 			echo '<div class="carousel-inner">';
-
 
 			$i = 0;
 			foreach ($counters as $counter):
@@ -199,11 +232,11 @@ function sliders()
 			endforeach;
 			echo '</div>';
 
-			echo '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+			echo '<button class="carousel-control-prev" type="button" data-bs-target="#' .$id. '" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Previous</span>
 			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+			<button class="carousel-control-next" type="button" data-bs-target="#' .$id. '" data-bs-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>';
