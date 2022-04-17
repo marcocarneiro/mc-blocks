@@ -36,7 +36,6 @@ function slugify($text)
   if (empty($text)) {
     return 'n-a';
   }
-
   return $text;
 }
 
@@ -172,8 +171,8 @@ add_action( 'carbon_fields_register_fields', 'simulacao_financiamento' );
 function sliders()
 {
     Block::make(__('MC Slider Show'))->add_fields(array(
-        Field::make('text', 'all_counter_heading', __('Block Title')) ,
-        Field::make('complex', 'crb_list_counter', __('Counter'))
+        Field::make('text', 'titulo', __('Block Title')) ,
+        Field::make('complex', 'coluna', __('Counter'))
             ->set_layout('tabbed-horizontal')
             ->add_fields(array(
             Field::make('image', 'counter_img', 'Imagem')
@@ -194,13 +193,13 @@ function sliders()
     {
 
         //Cria um slug com o título do slideshow
-		$id = slugify($fields['all_counter_heading']);
+		$id = slugify($fields['titulo']);
 
-		$counters = $fields['crb_list_counter'];
-        if ($counters):			
+		$colunas = $fields['coluna'];
+        if ($colunas):			
 			echo '<div id="' .$id. '" class="carousel slide" data-bs-ride="carousel">';
 			echo '<div class="carousel-indicators">';
-				for ($c=0; $c < count($counters); $c++) {
+				for ($c=0; $c < count($colunas); $c++) {
 					if($c == 0){
 						echo '<button type="button" data-bs-target="#' .$id. '" data-bs-slide-to="' .$c. '" class="active" aria-current="true" aria-label="Slide ' .$c. '"></button>';
 					}else{
@@ -211,7 +210,7 @@ function sliders()
 			echo '<div class="carousel-inner">';
 
 			$i = 0;
-			foreach ($counters as $counter):
+			foreach ($colunas as $counter):
                 $image_black = $counter['counter_img'];
                 $list_counter_tb = $counter['legenda'];
 				
@@ -247,3 +246,76 @@ function sliders()
     });
 }
 add_action('carbon_fields_register_fields', 'sliders');
+
+/**
+ * Bloco para Colunas
+ * Bootstrap 5
+ */
+function colunas()
+{
+    Block::make(__('MC Colunas'))->add_fields(array(
+        Field::make( 'color', 'bg_cor_linha', __( 'Cor de fundo para a linha de colunas' ) )
+		->set_palette( array( '#FF0000', '#00FF00', '#0000FF' ) ),
+        Field::make('complex', 'coluna', __('Inserir colunas'))
+            ->set_layout('tabbed-horizontal')
+            ->add_fields(array(
+				//configuração de cada coluna
+				Field::make( 'number', 'tamanho', 'Tamanho da coluna (1 a 12)' )->set_width(20),
+				Field::make( 'color', 'bg_cor', __( 'Cor de fundo para a coluna' ) )->set_width(20),
+				Field::make( 'select', 'animacao', __( 'Selecione uma animação para a coluna' ) )->set_width(20)
+				->set_options( array(
+					'nenhuma' => 'nenhuma',
+					'fade-up' => 'fade-up',
+					'fade-down' => 'fade-down',
+					'fade-right' => 'fade-right',
+					'fade-left' => 'fade-left',
+					'flip-left' => 'flip-left',
+					'flip-right' => 'flip-right',
+					'flip-up' => 'flip-up',
+					'flip-down' => 'flip-down',
+					'zoom-in' => 'zoom-in',
+				) ),
+				Field::make( 'number', 'duracao', 'Duração da animação em milisegundos (1000 = 1 segundo)' )->set_width(20),
+				Field::make( 'number', 'delay', 'Delay da animação em milisegundos (1000 = 1 segundo)' )->set_width(20),
+				Field::make( 'number', 'padding', 'Margem interna - padding - 1 a 5' )->set_width(20),
+				Field::make( 'rich_text', 'conteudo', __( 'Conteúdo' ) )
+        )) ,
+
+    ))
+        ->set_icon('grid-view')
+        ->set_keywords([__('Colunas') ])
+        ->set_description(__('Bloco para criação de colunas Bootstrap - tela dividida em 12 colunas.'))
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+        ->set_render_callback(function ($fields, $attributes, $inner_blocks)
+    {
+
+        //Cria um slug com o título do slideshow
+		$id = slugify($fields['titulo']);
+
+		$colunas = $fields['coluna'];
+        if ($colunas):			
+			//HTML
+			$corLinha = $fields['bg_cor_linha'];
+			if($fields['bg_cor_linha'] != ''){$corLinha = 'style="background-color:'.$fields['bg_cor_linha'].'"';}
+
+			echo '<div class="row" '.$corLinha.'>';
+			
+			foreach ($colunas as $coluna):
+				//HTML DAS COLUNAS
+				$col = 'class="col-md-12"';
+				if($coluna['tamanho'] != ''){$col = 'class="col-md-'.$coluna['tamanho'].'"';}
+				$bgcol = '';
+				if($coluna['bg_cor'] != ''){$bgcol = ' style="background-color:'.$coluna['bg_cor'].'"';}
+
+				echo '<div '.$col. $bgcol.'>';
+				echo $coluna['conteudo'];
+				echo '</div>';
+				
+			endforeach;
+
+			echo '</div>';
+
+        endif;
+    });
+}
+add_action('carbon_fields_register_fields', 'colunas');
