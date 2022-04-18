@@ -260,9 +260,9 @@ function colunas()
             ->set_layout('tabbed-horizontal')
             ->add_fields(array(
 				//configuração de cada coluna
-				Field::make( 'number', 'tamanho', 'Tamanho da coluna (1 a 12)' )->set_width(20),
-				Field::make( 'color', 'bg_cor', __( 'Cor de fundo para a coluna' ) )->set_width(20),
-				Field::make( 'select', 'animacao', __( 'Selecione uma animação para a coluna' ) )->set_width(20)
+				Field::make( 'number', 'tamanho', 'Tamanho da coluna (1 a 12)' )->set_width(10),
+				Field::make( 'color', 'bg_cor', __( 'Cor de fundo para a coluna' ) )->set_width(10),
+				Field::make( 'select', 'animacao', __( 'Selecione uma animação para a coluna' ) )->set_width(10)
 				->set_options( array(
 					'nenhuma' => 'nenhuma',
 					'fade-up' => 'fade-up',
@@ -275,9 +275,9 @@ function colunas()
 					'flip-down' => 'flip-down',
 					'zoom-in' => 'zoom-in',
 				) ),
-				Field::make( 'number', 'duracao', 'Duração da animação em milisegundos (1000 = 1 segundo)' )->set_width(20),
-				Field::make( 'number', 'delay', 'Delay da animação em milisegundos (1000 = 1 segundo)' )->set_width(20),
-				Field::make( 'number', 'padding', 'Margem interna - padding - 1 a 5' )->set_width(20),
+				Field::make( 'number', 'duracao', 'Duração da animação em milisegundos (1000 = 1 segundo)' )->set_width(10),
+				Field::make( 'number', 'delay', 'Delay da animação em milisegundos (1000 = 1 segundo)' )->set_width(10),
+				Field::make( 'number', 'padding', 'Margem interna - padding - 1 a 5' )->set_width(10),
 				Field::make( 'rich_text', 'conteudo', __( 'Conteúdo' ) )
         )) ,
 
@@ -306,8 +306,14 @@ function colunas()
 				if($coluna['tamanho'] != ''){$col = 'class="col-md-'.$coluna['tamanho'].'"';}
 				$bgcol = '';
 				if($coluna['bg_cor'] != ''){$bgcol = ' style="background-color:'.$coluna['bg_cor'].'"';}
+				$animac = '';
+				if($coluna['animacao'] != 'nenhuma'){$animac = ' data-aos="'.$coluna['animacao'].'"';}
+				$delay = '';
+				if($coluna['delay'] != ''){$delay = ' data-aos-delay="'.$coluna['delay'].'"';}
+				$padding = '';
+				if($coluna['padding'] != ''){$padding = 'class="p-'.$coluna['padding'].'"';}
 
-				echo '<div '.$col. $bgcol.'>';
+				echo '<div '.$col. $bgcol. $animac. $delay. $padding.'>';
 				echo $coluna['conteudo'];
 				echo '</div>';
 				
