@@ -19,6 +19,9 @@ Bloco baseado no componente Carousel do Bootstrap. Pode-se inserir várias image
 ### Simulação Financiamento
 Esse bloco pode ser usado em sites de financeiras ou cooperativas de crédito, serve para o usuário fazer uma simulação de financiamento. Nas configurações do bloco pode-se definir uma taxa de juros e quantidade máximas de parcelas, o bloco calcula o valor da mensalidade após o usuário digitar um valor e parcelas desejadas.
 
+### Lista de Bullets Coloridos
+Bloco onde o administrador / editor insere uma lista onde poderá escolher a cor e tamanho do marcador.
+
 ### Accordion Simples
 Link ou botão para revelar um conteúdo de texto ou imagem. 
 
