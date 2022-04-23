@@ -18,3 +18,16 @@ Bloco baseado no componente Carousel do Bootstrap. Pode-se inserir várias image
 
 ### Simulação Financiamento
 Esse bloco pode ser usado em sites de financeiras ou cooperativas de crédito, serve para o usuário fazer uma simulação de financiamento. Nas configurações do bloco pode-se definir uma taxa de juros e quantidade máximas de parcelas, o bloco calcula o valor da mensalidade após o usuário digitar um valor e parcelas desejadas.
+
+### Accordion Simples
+Link ou botão para revelar um conteúdo de texto ou imagem. 
+
+### Image Accordion
+Bloco onde uma imagem abre um accordion no centro da imagem. Deve-se ter uma imagem como cabeçalho e outra para rodapé, o conteúdo é aberto no centro. <a href="https://cooperata.coop.br/cooperativismo/" target="_blank">Veja o exemplo aqui</a> 
+
+### Open Modal
+Bloco onde uma imagem ou texto abre um determinado modal na página. Pode-se inserir quantos modais quiser.
+
+### Gerador de PDF
+Bloco onde o administrador / Editor do site poderá montar uma estrutura de parágrafos e campos de formulário onde o usuário do site poderá ao final do preenchimento, gerar um PDF com os campos preenchidos.<br>
+Utiliza o <a href="https://github.com/dompdf/dompdf" target="_blank">DomPDF,</a> previamente instalado com o composer juntamente com o plugin.
