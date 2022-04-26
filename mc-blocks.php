@@ -41,7 +41,7 @@ function slugify($text)
 
 
 /**
- * Bloco imagem abre vídeo em janela modal
+ * Bloco Imagem videomodal
  */
 function imagem_videomodal()
 {
@@ -73,7 +73,7 @@ add_action( 'carbon_fields_register_fields', 'imagem_videomodal' );
 
 
 /**
- * Bloco para vídeo em fullscreen
+ * Bloco Vídeo Background
  */
 function video_background()
 {
@@ -110,8 +110,7 @@ add_action( 'carbon_fields_register_fields', 'video_background' );
 
 
 /**
- * Bloco para simulação de financiamento
- * Bootstrap 5
+ * Bloco Simulação Financiamento
  */
 function simulacao_financiamento()
 {
@@ -165,8 +164,7 @@ add_action( 'carbon_fields_register_fields', 'simulacao_financiamento' );
 
 
 /**
- * Bloco para Sliders - carousel
- * Bootstrap 5
+ * Bloco Slideshow
  */
 function sliders()
 {
@@ -247,9 +245,9 @@ function sliders()
 }
 add_action('carbon_fields_register_fields', 'sliders');
 
+
 /**
- * Bloco para Colunas
- * Bootstrap 5
+ * Bloco Colunas Simples
  */
 function colunas()
 {
@@ -325,3 +323,55 @@ function colunas()
     });
 }
 add_action('carbon_fields_register_fields', 'colunas');
+
+
+/**
+ * Bloco Bullets Coloridos
+ */
+function bullets_colors()
+{
+    Block::make(__('MC Bullets Coloridos'))->add_fields(array(
+        Field::make('text', 'titulo', __('Block Title')) ,
+		Field::make( 'number', 'tamanho', 'Tamanho do Marcador' ),
+		Field::make( 'select', 'formato', __( 'Formato do marcador' ) )->set_width(10)->set_required(true)
+				->set_options( array(
+					'circle' => 'circle',
+					'square' => 'square',
+				) ),
+        Field::make('complex', 'lista', __('Counter'))
+            ->set_layout('tabbed-horizontal')
+            ->add_fields(array(
+            Field::make('text', 'item_text', 'Ítem de lista')
+                ->set_required(true)
+                ->set_width(50) ,
+			Field::make( 'color', 'bullet_color', __( 'Cor do marcador' ) )->set_width(10),
+			Field::make( 'color', 'text_color', __( 'Cor do texto' ) )->set_width(10),
+        )) ,		
+
+    ))
+        ->set_icon('editor-ul')
+        ->set_keywords([__('BulletsColors') ])
+        ->set_description(__('Bloco para lista com bullets coloridos.'))
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+        ->set_render_callback(function ($fields, $attributes, $inner_blocks)
+    {
+
+        //Cria um slug com o título do slideshow
+		$id = slugify($fields['titulo']);
+
+		$lista = $fields['lista'];
+        if ($lista):
+			echo '
+			<div id="'.$id.'" class="lista-marcadores-coloridos">
+				<ul style="list-style-type:' .$fields['formato']. ';">';	
+
+			foreach ($lista as $item):
+				echo '<li style="position:relative; color:'.$item['bullet_color'].'; font-size:' .$fields['tamanho']. 'rem;  line-height: ' .$fields['tamanho']. 'rem;">
+				  <span style="display:block; position: absolute; top:0; left:0; color:'.$item['text_color'].'; font-size:1rem !important;"> '.$item['item_text'].'</span></li>';				
+			endforeach;
+			echo '</ul></div>';
+			
+        endif;
+    });
+}
+add_action('carbon_fields_register_fields', 'bullets_colors');
