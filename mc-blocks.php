@@ -375,3 +375,27 @@ function bullets_colors()
     });
 }
 add_action('carbon_fields_register_fields', 'bullets_colors');
+
+
+
+
+
+	function teste()
+	{
+		Block::make( __( 'Teste com INNER BLOCKS' ) )
+		->add_fields( array(
+			Field::make('text', 'titulo', __('Block Title')) ,
+		) )
+		->set_inner_blocks( true )
+		->set_inner_blocks_position( 'below' )
+		->set_icon('editor-ul')
+		->set_keywords([__('InnerBlocks') ])
+		->set_description(__('Bloco com outros blocos internos.'))
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_render_callback( function () {
+			echo '<div class="teste">';
+			var_dump($fields);
+			echo '</div>';
+		} );
+	}
+	add_action('carbon_fields_register_fields', 'teste');
