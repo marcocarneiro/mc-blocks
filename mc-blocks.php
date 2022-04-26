@@ -377,25 +377,41 @@ function bullets_colors()
 add_action('carbon_fields_register_fields', 'bullets_colors');
 
 
-
-
-
-	function teste()
-	{
-		Block::make( __( 'Teste com INNER BLOCKS' ) )
+/**
+ * Bloco Accordion Simples
+ */
+function simple_accordion()
+{
+	Block::make( 'MC Accordion Simples' )
 		->add_fields( array(
-			Field::make('text', 'titulo', __('Block Title')) ,
+			Field::make( 'text', 'identidade', __( 'Nome único do bloco, todas minúsculas, sem espaços e sem acentos, exemplo: meu-id-unico' ) ),
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
+			Field::make( 'color', 'bg_color', __( 'Cor de fundo' ) )->set_width(10),
+			Field::make( 'number', 'padding', 'Margem interna - padding - 1 a 5' )->set_width(10),				
 		) )
+		->set_description( __( 'Insira esse bloco na posição onde deverá ser aberto. 
+		Um link ou botão com os seguintes atributos:  data-bs-toggle="collapse" href="#meu-id-unico" vai abrir o Accordion.' ) )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_icon( 'editor-kitchensink' )
 		->set_inner_blocks( true )
 		->set_inner_blocks_position( 'below' )
-		->set_icon('editor-ul')
-		->set_keywords([__('InnerBlocks') ])
-		->set_description(__('Bloco com outros blocos internos.'))
-		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
-		->set_render_callback( function () {
-			echo '<div class="teste">';
-			var_dump($fields);
-			echo '</div>';
+		->set_render_callback( function ( $block) {
+ 
+			ob_start();
+			?>
+			<?php
+				$padding = '';
+				if($block['padding'] != ''){$padding = ' p-'.$block['padding'];}
+			?>
+			
+			<div class="collapse<?php echo $padding; ?>" id="<?php echo $block['identidade']; ?>" 
+			style="background-color:<?php echo $block['bg_color']; ?>">
+				<?php echo $block['content']; ?>
+			</div>					
+ 
+			<?php
+ 
+			return ob_get_flush();
 		} );
-	}
-	add_action('carbon_fields_register_fields', 'teste');
+}
+add_action( 'carbon_fields_register_fields', 'simple_accordion' );
