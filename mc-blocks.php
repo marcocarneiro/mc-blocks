@@ -393,8 +393,6 @@ function simple_accordion()
 		Um link ou botão com os seguintes atributos:  data-bs-toggle="collapse" href="#meu-id-unico" vai abrir o Accordion.' ) )
 		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
 		->set_icon( 'editor-kitchensink' )
-		->set_inner_blocks( true )
-		->set_inner_blocks_position( 'below' )
 		->set_render_callback( function ( $block) {
  
 			ob_start();
