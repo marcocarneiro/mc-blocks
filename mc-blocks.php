@@ -417,3 +417,63 @@ function simple_accordion()
 		} );
 }
 add_action( 'carbon_fields_register_fields', 'simple_accordion' );
+
+
+
+/**
+ * Bloco Image Accordion
+ */
+function image_accordion()
+{
+	Block::make( 'MC Image Accordion' )
+		->add_fields( array(
+			Field::make( 'text', 'identidade', __( 'Nome único do bloco, não deverá se repetir na mesma página.' ) )->set_width(20),
+			Field::make( 'number', 'largura', 'Largura da caixa (deixe em branco para 100%)' )->set_width(20),
+			Field::make( 'image', 'image_top', __( 'Imagem do topo da caixa' ) )->set_width(20),
+			Field::make( 'image', 'image_bottom', __( 'Imagem do rodapé da caixa' ) )->set_width(20),			
+			Field::make( 'color', 'bg_color', __( 'Cor de fundo do conteúdo' ) )->set_width(10),
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),			
+		) )
+		->set_description( __( 'Bloco que abre um accordion entre duas imagens. Escolha uma imagem para o topo e outra para o rodapé.' ) )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_icon( 'editor-kitchensink' )
+		->set_render_callback( function ( $block) {
+ 
+			ob_start();
+			?>
+			<?php
+				$identidade = slugify($block['identidade']);
+				$bgColor = '';
+				$cardColor = '';
+				if($block['bg_color'] != ''){
+					$bgColor = 'style="background-color:'.$block['bg_color'].'"';
+					$cardColor = 'style="background:none"';
+				}
+				$largura = ' width="100%"';
+				if($block['largura'] != ''){
+					$largura = ' width="'.$block['largura'].'"';
+				}
+			?>
+
+			<div class="cx-conteudo-oculto">
+				<a data-bs-toggle="collapse" href="#<?php echo $identidade ?>" role="button" aria-expanded="false" aria-controls="<?php echo $identidade ?>">
+					<img <?php echo $largura ?> src="<?php echo wp_get_attachment_image_url( $block['image_top'] ); ?>" class="img-fluid" style="display:block">
+				</a>
+
+				<div class="collapse" id="<?php echo $identidade; ?>" <?php echo $bgColor; ?> style="width:<?php echo $block['largura'] ?>px">
+					<div class="card card-body" <?php echo $cardColor;?> >
+						<?php echo $block['content']; ?>
+					</div>
+				</div>
+
+				<img <?php echo $largura ?> src="<?php echo wp_get_attachment_image_url( $block['image_bottom'] ); ?>" class="img-fluid" style="display:block">
+			</div>
+			
+								
+ 
+			<?php
+ 
+			return ob_get_flush();
+		} );
+}
+add_action( 'carbon_fields_register_fields', 'image_accordion' );

@@ -1,7 +1,7 @@
 # mc-blocks
 Coleção de Blocos de Gutenberg - WordPress<br>
 Para temas construídos com o Bootstrap 5.<br>
-A justificativa para esse conjunto de blocos é para temas WordPress que não utilizam construtores de páginas como o Elementor ou o DIVI. Usuários com pouca experiência em ferramentas de Design Gráfico sentem dificuldade com esses construtores de páginas, para esses casos os blocos são uma opção "mais confortável" para a edição das páginas.<br>
+A justificativa para esse conjunto de blocos é para temas WordPress que não utilizam construtores de páginas como o Elementor ou o DIVI. Usuários com pouca experiência em ferramentas de Design Gráfico sentem dificuldade com esses construtores de páginas, para esses casos os blocos são uma opção "mais confortável" para a edição.<br>
 Essa coleção de blocos utiliza a biblioteca <a href="https://carbonfields.net/" target="_blank">Carbon Fields,</a> que permitem o desenvolvimento de blocos totalmente feitos com código PHP. Utilize como um complemento do Kadence Blocks. A montagem de layouts fica muito fácil utilizando o sistema de GRID do plugin Kadence que permite a inserção de blocos MC Blocks.
 
 ## Blocos disponíveis
