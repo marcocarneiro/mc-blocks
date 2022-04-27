@@ -287,7 +287,7 @@ function colunas()
         ->set_render_callback(function ($fields, $attributes, $inner_blocks)
     {
 
-        //Cria um slug com o título do slideshow
+        //Cria um slug com o título do bloco
 		$id = slugify($fields['titulo']);
 
 		$colunas = $fields['coluna'];
@@ -331,8 +331,8 @@ add_action('carbon_fields_register_fields', 'colunas');
 function bullets_colors()
 {
     Block::make(__('MC Bullets Coloridos'))->add_fields(array(
-        Field::make('text', 'titulo', __('Block Title')) ,
-		Field::make( 'number', 'tamanho', 'Tamanho do Marcador' ),
+        Field::make('text', 'titulo', __('Block Title'))->set_width(20) ,
+		Field::make( 'number', 'tamanho', 'Tamanho do Marcador' )->set_width(20) ,
 		Field::make( 'select', 'formato', __( 'Formato do marcador' ) )->set_width(10)->set_required(true)
 				->set_options( array(
 					'circle' => 'circle',
@@ -384,10 +384,9 @@ function simple_accordion()
 {
 	Block::make( 'MC Accordion Simples' )
 		->add_fields( array(
-			Field::make( 'text', 'identidade', __( 'Nome único do bloco, todas minúsculas, sem espaços e sem acentos, exemplo: meu-id-unico' ) ),
-			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
+			Field::make( 'text', 'identidade', __( 'Nome único do bloco, todas minúsculas, sem espaços e sem acentos, exemplo: meu-id-unico' ) )->set_width(20),			
 			Field::make( 'color', 'bg_color', __( 'Cor de fundo' ) )->set_width(10),
-			Field::make( 'number', 'padding', 'Margem interna - padding - 1 a 5' )->set_width(10),				
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),			
 		) )
 		->set_description( __( 'Insira esse bloco na posição onde deverá ser aberto. 
 		Um link ou botão com os seguintes atributos:  data-bs-toggle="collapse" href="#meu-id-unico" vai abrir o Accordion.' ) )
@@ -398,13 +397,18 @@ function simple_accordion()
 			ob_start();
 			?>
 			<?php
-				$padding = '';
-				if($block['padding'] != ''){$padding = ' p-'.$block['padding'];}
+				$bgColor = '';
+				$cardColor = '';
+				if($block['bg_color'] != ''){
+					$bgColor = 'style="background-color:'.$block['bg_color'].'"';
+					$cardColor = 'style="background:none"';
+				}
 			?>
 			
-			<div class="collapse<?php echo $padding; ?>" id="<?php echo $block['identidade']; ?>" 
-			style="background-color:<?php echo $block['bg_color']; ?>">
-				<?php echo $block['content']; ?>
+			<div class="collapse" id="<?php echo $block['identidade']; ?>" <?php echo $bgColor; ?>>
+				<div class="card card-body" <?php echo $cardColor;?>>
+					<?php echo $block['content']; ?>
+				</div>
 			</div>					
  
 			<?php
