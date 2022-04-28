@@ -489,12 +489,7 @@ function open_modal()
 		->add_fields( array(
 			Field::make( 'text', 'identidade', __( 'Nome único do bloco, não deverá se repetir na mesma página.' ) )->set_width(20),
 			Field::make( 'text', 'txt_botao', __( 'Texto do botão que abre o modal.' ) )->set_width(20),
-			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
-			/* Field::make( 'number', 'largura', 'Largura da caixa (deixe em branco para 100%)' )->set_width(20),
-			Field::make( 'image', 'image_top', __( 'Imagem do topo da caixa' ) )->set_width(20),
-			Field::make( 'image', 'image_bottom', __( 'Imagem do rodapé da caixa' ) )->set_width(20),			
-			Field::make( 'color', 'bg_color', __( 'Cor de fundo do conteúdo' ) )->set_width(10),
-			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ), */			
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),		
 		) )
 		->set_description( __( 'Esse bloco adiciona um botão ou link para abrir uma janela modal.' ) )
 		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
