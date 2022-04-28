@@ -477,3 +477,58 @@ function image_accordion()
 		} );
 }
 add_action( 'carbon_fields_register_fields', 'image_accordion' );
+
+
+
+/**
+ * Bloco Open Modal
+ */
+function open_modal()
+{
+	Block::make( 'MC Open Modal' )
+		->add_fields( array(
+			Field::make( 'text', 'identidade', __( 'Nome único do bloco, não deverá se repetir na mesma página.' ) )->set_width(20),
+			Field::make( 'text', 'txt_botao', __( 'Texto do botão que abre o modal.' ) )->set_width(20),
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),
+			/* Field::make( 'number', 'largura', 'Largura da caixa (deixe em branco para 100%)' )->set_width(20),
+			Field::make( 'image', 'image_top', __( 'Imagem do topo da caixa' ) )->set_width(20),
+			Field::make( 'image', 'image_bottom', __( 'Imagem do rodapé da caixa' ) )->set_width(20),			
+			Field::make( 'color', 'bg_color', __( 'Cor de fundo do conteúdo' ) )->set_width(10),
+			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ), */			
+		) )
+		->set_description( __( 'Esse bloco adiciona um botão ou link para abrir uma janela modal.' ) )
+		->set_category( 'custom-category', __( 'MC Blocks' ), 'smiley' )
+		->set_icon( 'admin-page' )
+		->set_render_callback( function ( $block) {
+ 
+			ob_start();
+			?>
+			<?php
+				$identidade = slugify($block['identidade']);
+			?>
+
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<?php echo $identidade; ?>">
+				<?php echo $block['txt_botao']; ?>
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="<?php echo $identidade; ?>" tabindex="-1" aria-labelledby="<?php echo $identidade; ?>" aria-hidden="true">
+			<div class="modal-dialog">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<div class="modal-content">				
+					<div class="modal-body">
+						<?php echo $block['content']; ?>
+					</div>
+				</div>
+			</div>
+			</div>
+			
+								
+ 
+			<?php
+ 
+			return ob_get_flush();
+		} );
+}
+add_action( 'carbon_fields_register_fields', 'open_modal' );
