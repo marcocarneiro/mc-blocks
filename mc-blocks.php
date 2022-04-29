@@ -457,7 +457,7 @@ function image_accordion()
 
 			<div class="cx-conteudo-oculto">
 				<a data-bs-toggle="collapse" href="#<?php echo $identidade ?>" role="button" aria-expanded="false" aria-controls="<?php echo $identidade ?>">
-					<img <?php echo $largura ?> src="<?php echo wp_get_attachment_image_url( $block['image_top'] ); ?>" class="img-fluid" style="display:block">
+					<img <?php echo $largura ?> src="<?php echo wp_get_attachment_image_url( $block['image_top'] ); ?>" style="display:block">
 				</a>
 
 				<div class="collapse" id="<?php echo $identidade; ?>" <?php echo $bgColor; ?> style="width:<?php echo $block['largura'] ?>px">
