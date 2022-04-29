@@ -489,6 +489,7 @@ function open_modal()
 		->add_fields( array(
 			Field::make( 'text', 'identidade', __( 'Nome único do bloco, não deverá se repetir na mesma página.' ) )->set_width(20),
 			Field::make( 'text', 'txt_botao', __( 'Texto do botão que abre o modal.' ) )->set_width(20),
+			Field::make( 'checkbox', 'extra_large', 'Modal tamanho grande?' )->set_option_value( 'yes' )->set_width(20),
 			Field::make( 'rich_text', 'content', __( 'Conteúdo' ) ),		
 		) )
 		->set_description( __( 'Esse bloco adiciona um botão ou link para abrir uma janela modal.' ) )
@@ -500,17 +501,32 @@ function open_modal()
 			?>
 			<?php
 				$identidade = slugify($block['identidade']);
+				$extra_large = '';
+				if($block['extra_large']){$extra_large = ' modal-xl';}
 			?>
 
+			<style>
+				#<?php echo $identidade; ?> .btn-fechar{
+					position: absolute;
+					right: -25px;
+					top: 0;
+					cursor: pointer;
+					color: #fff;
+					border: none;
+					background: none;
+					font-weight: bold;
+				}
+			</style>
 			<!-- Button trigger modal -->
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<?php echo $identidade; ?>">
 				<?php echo $block['txt_botao']; ?>
 			</button>
 
 			<!-- Modal -->
-			<div class="modal fade" id="<?php echo $identidade; ?>" tabindex="-1" aria-labelledby="<?php echo $identidade; ?>" aria-hidden="true">
-			<div class="modal-dialog">
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<div class="modal fade" id="<?php echo $identidade; ?>" tabindex="-1" 
+			aria-labelledby="<?php echo $identidade; ?>" aria-hidden="true">
+			<div class="modal-dialog<?php echo $extra_large; ?>">
+				<button type="button" class="btn-fechar" data-bs-dismiss="modal" aria-label="Close">X</button>
 				<div class="modal-content">				
 					<div class="modal-body">
 						<?php echo $block['content']; ?>
